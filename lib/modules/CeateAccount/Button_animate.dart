@@ -26,7 +26,7 @@ class MinimalisticButton extends CustomAnyAnimatedButton {
         width: width,
         height: 56.0,
         decoration: BoxDecoration(
-          color: enabled ? Color.fromRGBO(102, 191, 255, 1) : Colors.grey,
+          color: enabled ? Color.fromRGBO(126, 217, 248, 1.0) : Colors.grey,
           borderRadius: _borderRadius,
         ),
         child: Material(
@@ -41,7 +41,7 @@ class MinimalisticButton extends CustomAnyAnimatedButton {
                 children: [
                   Text(
                     text,
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white,fontSize: 20),
                     maxLines: 1,
                     softWrap: false,
                   ),

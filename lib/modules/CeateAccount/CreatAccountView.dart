@@ -1,7 +1,11 @@
+import 'package:armando/Provider/user_provider.dart';
 import 'package:armando/base.dart';
+import 'package:armando/models/my_user.dart';
 import 'package:armando/modules/CeateAccount/Button_animate.dart';
 import 'package:armando/modules/CeateAccount/CreateAccountNavigator.dart';
 import 'package:armando/modules/CeateAccount/CreateAccountViewModel.dart';
+import 'package:armando/modules/Home/home_view.dart';
+import 'package:armando/modules/Login/LoginView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -15,16 +19,20 @@ class CreateAccountScreen extends StatefulWidget {
 }
 
 class _CreateAccountScreenState
-    extends BaseView<CreateAccountScreen, CreateAccountViewModel> implements CreateAccountNavigator {
+    extends BaseView<CreateAccountScreen, CreateAccountViewModel>
+    implements CreateAccountNavigator {
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    ViewModel.navigator=this;
+    ViewModel.navigator = this;
   }
 
-  var emailController = TextEditingController();
+  var fNameController = TextEditingController();
+  var lNameController = TextEditingController();
+  var userNameController = TextEditingController();
 
+  var emailController = TextEditingController();
   var passwordController = TextEditingController();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -61,6 +69,7 @@ class _CreateAccountScreenState
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       TextFormField(
+                        controller: fNameController,
                         validator: (value) {
                           if (value == '' && value!.isEmpty) {
                             return 'Please enter your name';
@@ -82,6 +91,7 @@ class _CreateAccountScreenState
                         height: 12,
                       ),
                       TextFormField(
+                        controller: lNameController,
                         validator: (value) {
                           if (value == '' && value!.isEmpty) {
                             return 'Please enter your last';
@@ -103,6 +113,7 @@ class _CreateAccountScreenState
                         height: 12,
                       ),
                       TextFormField(
+                        controller: userNameController,
                         validator: (value) {
                           if (value == '' && value!.isEmpty) {
                             return 'Please enter your user name';
@@ -184,6 +195,17 @@ class _CreateAccountScreenState
                         },
                         text: 'Create Account',
                       ),
+                      SizedBox(
+                        height: 25,
+                      ),
+                      InkWell(
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.lightBlueAccent,
+                          onTap: () {
+                            Navigator.pushReplacementNamed(
+                                context, LoginScreen.routeName);
+                          },
+                          child: Text('I have an account '))
                     ],
                   )),
             ),
@@ -196,12 +218,23 @@ class _CreateAccountScreenState
   void validateFormButton() {
     if (formKey.currentState!.validate()) {
       ViewModel.CreatAccountButton(
-          emailController.text, passwordController.text);
+        fNameController.text,
+          lNameController.text,
+          userNameController.text,
+          emailController.text,
+          passwordController.text);
     }
   }
 
   @override
   CreateAccountViewModel initViewModel() {
     return CreateAccountViewModel();
+  }
+
+  @override
+  void goTOHome(MyUser myUser) {
+    var provider=Provider.of<UserProvider>(context,listen: false);
+    provider.myUser=myUser;
+    Navigator.pushReplacementNamed(context, HomeViewScreen.routeName);
   }
 }

@@ -1,4 +1,8 @@
+import 'package:armando/Provider/user_provider.dart';
 import 'package:armando/base.dart';
+import 'package:armando/models/my_user.dart';
+import 'package:armando/modules/CeateAccount/CreatAccountView.dart';
+import 'package:armando/modules/Home/home_view.dart';
 import 'package:armando/modules/Login/LoginNavigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,22 +11,25 @@ import '../CeateAccount/Button_animate.dart';
 import 'LoginViewModel.dart';
 
 class LoginScreen extends StatefulWidget {
-  static const String routeName ='LoginScreen';
+  static const String routeName = 'LoginScreen';
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends BaseView<LoginScreen,LoginViewModel>implements LoginNavigator {
+class _LoginScreenState extends BaseView<LoginScreen, LoginViewModel>
+    implements LoginNavigator {
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    ViewModel.navigator=this;
+    ViewModel.navigator = this;
   }
+
   @override
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  var emailController=TextEditingController();
-  var passwordController=TextEditingController();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
 
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -49,7 +56,7 @@ class _LoginScreenState extends BaseView<LoginScreen,LoginViewModel>implements L
             body: Padding(
               padding: const EdgeInsets.all(22),
               child: Form(
-                key:formKey,
+                key: formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -62,7 +69,7 @@ class _LoginScreenState extends BaseView<LoginScreen,LoginViewModel>implements L
                         }
                         // const String email = "tony@starkindustries.com"
                         final bool emailValid = RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                             .hasMatch(value);
                         if (!emailValid) {
                           return 'Please enter valid email ';
@@ -113,6 +120,17 @@ class _LoginScreenState extends BaseView<LoginScreen,LoginViewModel>implements L
                       },
                       text: 'Create Account',
                     ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    InkWell(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.lightBlueAccent,
+                        onTap: () {
+                          Navigator.pushReplacementNamed(
+                              context, CreateAccountScreen.routeName);
+                        },
+                        child: Text('I dont have an account '))
                   ],
                 ),
               ),
@@ -122,14 +140,22 @@ class _LoginScreenState extends BaseView<LoginScreen,LoginViewModel>implements L
       ),
     );
   }
-void validateFormButton(){
-    if(formKey.currentState?.validate()==true){
-      ViewModel.Login(emailController.text,passwordController.text);
-    }
 
-}
+  void validateFormButton() {
+    if (formKey.currentState?.validate() == true) {
+      ViewModel.Login(emailController.text, passwordController.text);
+    }
+  }
+
   @override
   LoginViewModel initViewModel() {
     return LoginViewModel();
+  }
+
+  @override
+  goToHome(MyUser myUser) {
+    var provider=Provider.of<UserProvider>(context,listen: false);
+    provider.myUser=myUser;
+   Navigator.pushReplacementNamed(context, HomeViewScreen.routeName);
   }
 }

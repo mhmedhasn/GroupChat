@@ -1,10 +1,13 @@
 import 'package:armando/base.dart';
+import 'package:armando/database/database_utils.dart';
+import 'package:armando/models/my_user.dart';
 import 'package:armando/modules/CeateAccount/CreateAccountNavigator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 class CreateAccountViewModel extends BaseViewModel<CreateAccountNavigator> {
-  void CreatAccountButton(String emailAddress, String password) async {
+  void CreatAccountButton(String fName, String lName, String userName,
+      String emailAddress, String password) async {
     try {
       navigator!.showLoding();
       final credential =
@@ -12,8 +15,16 @@ class CreateAccountViewModel extends BaseViewModel<CreateAccountNavigator> {
         email: emailAddress,
         password: password,
       );
-      navigator!.hidenDialog();
-      navigator!.ShowMassage('Create account is successfully');
+      MyUser myUser = MyUser(
+          id: credential.user!.uid,
+          fName: fName,
+          lName: lName,
+          userName: userName,
+          email: emailAddress);
+      DataBaseUtils.AddUserToFirestore(myUser);
+      //adduser
+      // navigator!.hidenDialog();
+      navigator!.goTOHome(myUser);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         navigator!.hidenDialog();
