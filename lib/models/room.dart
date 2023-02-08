@@ -20,7 +20,7 @@ class Room {
           roomImage: Json["roomImage"],
         );
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson()  {
     return {
       "id": id,
       "roomName": roomName,
