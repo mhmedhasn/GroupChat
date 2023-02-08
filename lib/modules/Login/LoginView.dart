@@ -101,7 +101,7 @@ class _LoginScreenState extends BaseView<LoginScreen, LoginViewModel>
                       },
                       decoration: InputDecoration(
                         label: Text('Password'),
-                        hintText: 'First name',
+                        hintText: 'Password',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -109,6 +109,7 @@ class _LoginScreenState extends BaseView<LoginScreen, LoginViewModel>
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
+
                     ),
                     SizedBox(
                       height: 12,

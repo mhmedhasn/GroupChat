@@ -5,15 +5,18 @@ import 'package:flutter/cupertino.dart';
 
 class UserProvider extends ChangeNotifier {
   MyUser? myUser;
-  late User userAuth;
+  User? userAuth;
 
   UserProvider(){
-    userAuth=FirebaseAuth.instance.currentUser!;
+    userAuth=FirebaseAuth.instance.currentUser;
     initMyUser();
   }
   void initMyUser() async {
     if (userAuth != null) {
-      myUser = await DataBaseUtils.ReadUserToFirestore(userAuth.uid);
+      myUser = await DataBaseUtils.ReadUserToFirestore(userAuth!.uid);
+      print('zzzzzzzzzzzzzzzzzzzzzzzz');
     }
+
+
   }
 }
